@@ -29,7 +29,7 @@ namespace Game_clic.Classes
             this.Level = Level;
             this.Glasses = Glasses;
             this.Money = Money; 
-            this. Damage = Damage;
+            this.Damage = Damage;
         }
     }
 

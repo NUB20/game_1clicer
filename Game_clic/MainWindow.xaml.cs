@@ -23,7 +23,7 @@ namespace Game_clic
     {
         public Classes.PersonInfo Player = new Classes.PersonInfo("Danil", 100, 10, 1, 0, 0, 5);
         public List<Classes.PersonInfo> Enemys = new List<Classes.PersonInfo>();
-        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        public DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public Classes.PersonInfo Enemy;
         public MainWindow()
         {
@@ -31,7 +31,7 @@ namespace Game_clic
             UserInfoPlayer();
             Enemys.Add(new Classes.PersonInfo("Гений на Shadow Fiend Иван", 100, 15, 1, 15, 5, 20));
             Enemys.Add(new Classes.PersonInfo("Снайпер", 20, 5, 1, 5, 2, 15));
-            Enemys.Add(new Classes.PersonInfo("Пудж", 200, 18, 3, 10, 8, 40));
+            Enemys.Add(new Classes.PersonInfo("Пудж", 100, 18, 3, 10, 8, 40));
         }
         public void UserInfoPlayer()
         {
@@ -54,10 +54,7 @@ namespace Game_clic
             dispatcherTimer.Start();
             SelectEnemy();
         }
-        private void AttackPlayer(object sender, System.EventArgs e)
-        {
-            
-        }
+       
         public void SelectEnemy()
         {
             int Id = new Random().Next(0, Enemys.Count);
@@ -68,7 +65,28 @@ namespace Game_clic
                 Enemys[Id].Level,
                 Enemys[Id].Glasses,
                 Enemys[Id].Money,
-                Enemys[Id].Damage);
+                Enemys[Id].Damage );
+        }
+        private void AttackPlayer(object sender, System.EventArgs e)
+        {
+            Player.Health -= Convert.ToInt32(Enemy.Damage * 100f / (100f - Enemy.Armor));
+            UserInfoPlayer();
+        }
+        private void AttackEnemy(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Enemy.Health -= Convert.ToInt32(Player.Damage * 100f / (100f - Enemy.Armor));
+            if (Enemy.Health <= 0)
+            {
+                Player.Glasses += Enemy.Glasses;
+                Player.Money += Enemy.Money;
+                UserInfoPlayer();
+                SelectEnemy();
+            }
+            else
+            {
+                emptyHealth.Content = "Жизненые показатели: " + Enemy.Health;
+                emptyArmor.Content = "Броня: " + Enemy.Armor;
+            }
         }
 
 
